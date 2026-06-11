@@ -1,6 +1,6 @@
 import random
 import time
-plyrStats = {"Skill": 100,
+plyrStats = {"Skill": 5,
              "Magic": [0, 0],
              "Strength": [0, 0],
              "Speach": [0, 0],
