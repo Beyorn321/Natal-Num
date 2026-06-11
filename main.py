@@ -18,6 +18,8 @@ difficulty = 0
 enmyInfo = dict()
 
 
+
+
 class dice:
     def rngSix(holder):
         choi = ["Magic", "Strength",
@@ -30,7 +32,6 @@ class dice:
             for j in range(holder[i][0]):
                 holder[i][1] += random.randint(1,
                                           3)
-        print(holder)
 
 
 
@@ -38,33 +39,44 @@ class dice:
 class cpuAttack:
     def rngBase(intel):
         choi = []
-        target = random.choice("Magic",
-        "Strength",
-        "Drama","Speach",
-        "Tech", "Resist")
-        for i in enmyStats:
-            if enmyStats[i][1] > 0:
-                choi.append(i)
-        choi2 = random.choice(choi)
-        dmg = random.randint(intel,
-        round(enmyStats[choi2][1] / 2))
-        plyrStats[target][1] -= dmg
 
+        target = random.choice([
+            "Magic", "Strength", "Drama",
+            "Speach", "Tech", "Resist"
+        ])
+
+        for stat, values in enmyStats.items():
+            if stat != "Skill" and values[1] > 0:
+                choi.append(stat)
+
+        choi2 = random.choice(choi)
+
+        dmg = random.uniform(
+            intel,
+            max(intel, round(float(enmyStats[choi2][1]) / 2, 1))
+        )
+
+        plyrStats[target][1] -= dmg
+        if plyrStats[target][1] < 0:
+            plyrStats[target][1] = 0
+
+        print(f"Enemy attacked {target}, dealing {dmg} damage,",
+              f"using its {choi2}!")
 
     def dumBase(intel, intel2,
                  intel3, intel4):
         choi = []
         if intel4 < 1:
-            intel3 = random.choice("Magic",
+            intel3 = random.choice(["Magic",
             "Strength",
             "Drama","Speach",
-            "Tech", "Resist")
+            "Tech", "Resist"])
             intel4 = intel2
         else:
             intel4 -= 1
-        for i in enmyStats:
-            if enmyStats[i][1] > 0:
-                choi.append(i)
+        for stat, values in enmyStats.items():
+            if stat != "Skill" and values[1] > 0:
+                choi.append(stat)
         hld = enmyStats
         for i in choi:
             ans = True
@@ -73,9 +85,13 @@ class cpuAttack:
                     ans = False
             if ans == True:
                 choi2 = i
-        dmg = random.randint(intel,
-        round(enmyStats[choi2][1] / 2))
+        dmg = round(random.uniform(intel,
+        float(enmyStats[choi2][1]) / 2, 1), 1)
         plyrStats[intel3][1] -= dmg
+        print(f"Enemy attacked {intel3}, dealing {dmg} damage,",
+              "using its !")
+        if plyrStats[intel3][1] < 0:
+            plyrStats[intel3][1] = 0
 
 
     def smartBase(intel, intel2, intel3, intel4):
@@ -105,68 +121,94 @@ class cpuAttack:
             if enmyStats[stat][1] > strngstVal:
                 strngstVal = enmyStats[stat][1]
                 strngst = stat
-        maxDmg = max(intel, round(enmyStats[strngst][1] / 2))
-        dmg = random.randint(intel, maxDmg)
+        maxDmg = max(intel,
+                     round(float(enmyStats[strngst][1]) / 2, 1))
+        dmg = round(random.uniform(intel, maxDmg), 1)
         plyrStats[intel3][1] -= dmg
         print(f"Enemy attacked {intel3}, dealing {dmg} damage!")
-
-
+        if plyrStats[intel3][1] < 0:
+            plyrStats[intel3][1] = 0
 
 
 def enemy_List(ans):
+    RLvUp = 0
+    DLvUp = 0
+    SLvUp = 0
+    if difficulty != 0 and difficulty % 4 == 0:
+        RLvUp += 2
+    if difficulty != 0 and difficulty % 6 == 0:
+        DLvUp += 2
+    if difficulty != 0 and difficulty % 10 == 0:
+        SLvUp += 3
     Enemies = {"Cawalk": {"Patrn": "dumbase",
-               "Agress": 2, "Stubrn": 2,
+               "Agress": 2 + (DLvUp / 2), "Stubrn": 2,
                "Focus": str, "Change": 0,
-              "skill": 2, "strength": 2,
-              "drama": 1},
+              "skill": 2 + DLvUp,
+            "strength": 2 + DLvUp,
+              "drama": 1 + DLvUp},
     "Tricloppy": {"Patrn": "dumbase",
-               "Agress": 5, "Stubrn": 4,
+               "Agress": 5 + (DLvUp / 2), "Stubrn": 4,
                "Focus": str, "Change": 0,
-              "skill": 1, "strength": 3,
-              "drama": 1},
+              "skill": 1 + DLvUp,
+              "strength": 3 + DLvUp,
+              "drama": 1 + DLvUp},
     "Triclopog": {"Patrn": "dumbase",
-               "Agress": 8, "Stubrn": 4,
+               "Agress": 8 + (DLvUp / 2),
+                 "Stubrn": 4,
                "Focus": str, "Change": 0,
-              "skill": 1, "Strength": 5,
-              "Drama": 2, "Resist": 2},
+              "skill": 1 + DLvUp,
+              "Strength": 5 + DLvUp,
+              "Drama": 2 + DLvUp,
+              "Resist": 2 + DLvUp},
     "Xphizard": {"Patrn": "smrtbase",
-               "Agress": 4, "Stubrn": 2,
+               "Agress": 4 + (SLvUp / 2),
+                 "Stubrn": 2,
                "Focus": str, "Change": 0,
-              "skill": 5, "Magic": 4,
-              "Speach": 2},
+              "skill": 5 + SLvUp,
+              "Magic": 4 + SLvUp,
+              "Speach": 2 + SLvUp},
     "Goodue": {"Patrn": "rngbase",
-               "Agress": 1, "Stubrn": 0,
+               "Agress": 1 + (RLvUp / 2),
+                 "Stubrn": 0,
                "Focus": str, "Change": 0,
-              "skill": 5, "Resist": 2},
+              "skill": 5 + RLvUp,
+              "Resist": 0  + RLvUp},
     "Drahqeon": {"Patrn": "smrtbase",
-               "Agress": 19, "Stubrn": 3,
+               "Agress": 19 + (SLvUp / 2),
+               "Stubrn": 3,
                "Focus": str, "Change": 0,
-              "skill": 6, "Strength": 11,
-              "Drama": 5, "Resist": 6,
-                "Speach": 4},
+              "skill": 6 + SLvUp,
+              "Strength": 11 + SLvUp,
+              "Drama": 5 + SLvUp,
+              "Resist": 6 + SLvUp,
+                "Speach": 4 + SLvUp},
     "Sanke": {"Patrn": "rngbase",
-               "Agress": 3, "Stubrn": 3,
+               "Agress": 3 + (RLvUp / 2),
+                 "Stubrn": 3,
                "Focus": str, "Change": 0,
-              "skill": 3, "Strength": 1,
-              "Speach": 4},
+              "skill": 3  + RLvUp,
+              "Strength": 1  + RLvUp,
+              "Speach": 4  + RLvUp},
     "Tobor": {"Patrn": "rngbase",
-               "Agress": 5, "Stubrn": 2,
+               "Agress": 5 + (RLvUp / 2),
+                 "Stubrn": 2,
                "Focus": str, "Change": 0,
-              "skill": 5, "Strength": 1,
-              "Tech": 5}
+              "skill": 5  + RLvUp,
+              "Strength": 1 + RLvUp,
+              "Tech": 5 + RLvUp}
                }
-    
+   
     enmyInfo.update(Enemies[ans])
-    print(enmyInfo)
     return enmyInfo
 
 
 
 
 def battle():
+    global difficulty
     nmychoi = None
     if difficulty == 0:
-        nmychoi = "Goodue"
+        nmychoi = "Tricloppy"
     else:
         nmychoi = random.choice("Cawalk", "Tricloppy",
                 "Triclopog", "Xphizard",
@@ -176,18 +218,87 @@ def battle():
     time.sleep(3)
     print(f"{nmychoi} appears!")
     time.sleep(1.5)
-    print(plyrStats)
     enemy_List(nmychoi)
     enmyStats["Skill"] = enmyInfo["skill"]
     for i in enmyStats:
         for j in enmyInfo:
-            print(i, j)
             if j == i:
                 enmyStats[i][0] = enmyInfo[j]
     dice.rngSix(enmyStats)
-    
-
-
+    nmyLoss = 6
+    plyrLoss = 6
+    plyrLife = True
+    plyr = "Shtirk"
+    plyrTurn = True
+    while nmyLoss > 0 and plyrLoss > 0 or plyrLife == True:
+        if plyrLoss == 0:
+            plyrLoss = 6
+            plyrLife = False
+            plyr = "Xphee"
+        if plyrTurn == True:
+            nmyLoss = 6
+            print(f"{plyr}:")
+            for key, value in plyrStats.items():
+                if isinstance(value, list):
+                    print(f"{key}: {value[1]}")
+            try:
+                print("Be accurate in spelling!")
+                plyrTrn1 = input("What enemy ability will you attack?")
+                plyrTrn2 = input("What ability will you use?")
+                damage = float(input("How much power will you use in your ability?"
+                               "(Power / 2 = damage   Power = ability value)"))
+                if plyrTrn1 in plyrStats and plyrTrn2 in enmyStats:
+                    if damage <= plyrStats[plyrTrn2][1]:
+                        enmyStats[plyrTrn1][1] -= damage / 2
+                            
+                    else:
+                        print("You exceeded your power, and",
+                                "override yourself")
+            except:
+                print("The ability you typed was off or",
+                      "you didn't properly used numbers.")
+            else:
+                print(f"You delt {damage / 2} damage to its {plyrTrn1}!")
+            finally:
+                print("End of turn.")
+            plyrTurn = False
+            for stat, values in enmyStats.items():
+                if stat != "Skill" and values[1] <= 0:
+                    nmyLoss -= 1
+                else:
+                    nmyLoss = 6
+        else:
+            plyrLoss = 6
+            V1 = enmyInfo["Agress"]
+            V2 = enmyInfo["Stubrn"]
+            V3 = enmyInfo["Focus"]
+            V4 = enmyInfo["Change"]
+            if enmyInfo["Patrn"] == "rngbase":
+                cpuAttack.rngBase(V1)
+            elif enmyInfo["Patrn"] == "dumbase":
+                cpuAttack.dumBase(V1, V2, V3, V4)
+            else:
+                cpuAttack.smrtBase(V1, V2, V3, V4)
+            plyrTurn = True
+            for stat, values in enmyStats.items():
+                if stat != "Skill" and values[1] <= 0:
+                    plyrLoss -= 1
+                else:
+                    plyrLoss = 6
+    if nmyLoss <= 0:
+        print(f"You defeated the {nmychoi}!")
+        time.sleep(1)
+        plyrStats["Skill"] += 2
+        difficulty += 1
+        print("You gained 2 skill points!")
+        time.sleep(1)
+        nature_story()
+    elif plyrLoss <= 0:
+        print(f"The {nmychoi} defeated you!")
+        time.sleep(1)
+        print("Game over!")
+        time.sleep(1)
+        quit()
 
 
 def nature_story():
@@ -227,10 +338,12 @@ def nature_story():
     Dtl = random.choice(themRng[Set1[1]])
     dice.rngSix(plyrStats)
 
-
     print(f"The planet brings you in.\n"
         f"Through {Set1[0]}, all the {Dtl} fill you in.\n"
         f"To change you once again, newly seen.")
+    time.sleep(2.5)
+    input("Continue?")
+    battle()
 
 
 
@@ -315,11 +428,5 @@ def intro():
 
 
 
-
-
-
-
-dice.rngSix(enmyStats)
 nature_story()
-battle()
 #intro()

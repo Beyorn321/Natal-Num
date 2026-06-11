@@ -7,3 +7,6 @@ Definitions: *Player vs Entity(Enemy /Boss), *dice stats rng (!with story), *int
 Dates:
  - June 9: complete the basics.
  - June 10: complete the basics and requirments or add advances.
+ - June 11:
+ - June 12:
+ 
