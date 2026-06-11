@@ -86,10 +86,10 @@ class cpuAttack:
             if ans == True:
                 choi2 = i
         dmg = round(random.uniform(intel,
-        float(enmyStats[choi2][1]) / 2, 1), 1)
+        float(enmyStats[choi2][1]) / 2), 1)
         plyrStats[intel3][1] -= dmg
         print(f"Enemy attacked {intel3}, dealing {dmg} damage,",
-              "using its !")
+              f"using its {choi2}!")
         if plyrStats[intel3][1] < 0:
             plyrStats[intel3][1] = 0
 
@@ -208,7 +208,7 @@ def battle():
     global difficulty
     nmychoi = None
     if difficulty == 0:
-        nmychoi = "Tricloppy"
+        nmychoi = "Goodue"
     else:
         nmychoi = random.choice("Cawalk", "Tricloppy",
                 "Triclopog", "Xphizard",
@@ -230,7 +230,7 @@ def battle():
     plyrLife = True
     plyr = "Shtirk"
     plyrTurn = True
-    while nmyLoss > 0 and plyrLoss > 0 or plyrLife == True:
+    while nmyLoss > 0 and plyrLoss > 0 or plyrLife == True and nmyLoss > 0:
         if plyrLoss == 0:
             plyrLoss = 6
             plyrLife = False
@@ -253,7 +253,8 @@ def battle():
                             
                     else:
                         print("You exceeded your power, and",
-                                "override yourself")
+                                "overestimated yourself")
+                        damage -= damage
             except:
                 print("The ability you typed was off or",
                       "you didn't properly used numbers.")
