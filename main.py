@@ -18,8 +18,6 @@ difficulty = 0
 enmyInfo = dict()
 
 
-
-
 class dice:
     def rngSix(holder):
         choi = ["Magic", "Strength",
@@ -250,6 +248,7 @@ def battle():
                 if plyrTrn1 in plyrStats and plyrTrn2 in enmyStats:
                     if damage <= plyrStats[plyrTrn2][1]:
                         enmyStats[plyrTrn1][1] -= damage / 2
+                        print(enmyStats[plyrTrn1][1])
                             
                     else:
                         print("You exceeded your power, and",
@@ -360,13 +359,12 @@ def intro():
                 time.sleep(0)
             linecount += 1
             if linecount > 8:
-                linecount = 0
                 break
         time.sleep(1.5)
         input("(Type anything to continue)")
     with open(Tutoro, "r", encoding="utf-8") as f:
         for line in f:
-            if 9 < linecount and linecount < 14:
+            if 10 < linecount and linecount < 15:
                 print(line.strip())
                 time.sleep(1.5)
             linecount += 1
@@ -380,7 +378,6 @@ def intro():
                     time.sleep(1.5)
                 linecount += 1
                 if linecount > 20:
-                    linecount = 0
                     break
             inp2 = input("Y/or type anything for no")
             if inp2.lower() == "y":
@@ -390,7 +387,6 @@ def intro():
                         time.sleep(2)
                     linecount += 1
                     if linecount > 20:
-                        linecount = 0
                         break
             else:
                 for line in f:
@@ -399,35 +395,34 @@ def intro():
                         time.sleep(2)
                     linecount += 1
                     if linecount > 24:
-                        linecount = 0
                         skip = True
                         break
         else:
             for line in f:
-                if linecount == 24:
+                if linecount == 27:
                     print(line.strip())
                     time.sleep(2)
                 linecount += 1
-                if linecount > 23:
+                if linecount > 27:
                     break
         if skip == False:
             for line in f:
-                if 24 < linecount and linecount < 33:
+                if 27 < linecount and linecount < 38:
                     print(line.strip())
-                    time.sleep(2)
+                    time.sleep(4)
                 linecount += 1
-                if linecount > 32:
+                if linecount > 38:
                     break
         for line in f:
-                if 32 < linecount and linecount < 35:
+                if 37 < linecount and linecount < 40:
                     print(line.strip())
                     time.sleep(2)
                 linecount += 1
-                if linecount > 34:
+                if linecount > 39:
                     break
 
 
 
 
-nature_story()
-#intro()
+#nature_story()
+intro()
