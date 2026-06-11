@@ -1,6 +1,6 @@
 import random
 import time
-plyrStats = {"Skill": 5,
+plyrStats = {"Skill": 100,
              "Magic": [0, 0],
              "Strength": [0, 0],
              "Speach": [0, 0],
@@ -210,10 +210,10 @@ def battle():
     if difficulty == 0:
         nmychoi = "Goodue"
     else:
-        nmychoi = random.choice("Cawalk", "Tricloppy",
+        nmychoi = random.choice(["Cawalk", "Tricloppy",
                 "Triclopog", "Xphizard",
                 "Goodue", "Drahqeon",
-                "Sanke", "Tobor")
+                "Sanke", "Tobor"])
     print("Something approaches!..")
     time.sleep(3)
     print(f"{nmychoi} appears!")
