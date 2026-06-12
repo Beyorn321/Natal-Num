@@ -16,6 +16,12 @@ enmyStats = {"Skill": 0,
              "Resist": [0, 0]}
 difficulty = 0
 enmyInfo = dict()
+Immunities = {"Magic": "Tech",
+              "Tech": "Drama",
+              "Drama": "Resist",
+              "Resist": "Speach",
+              "Speach": "Strength",
+              "Strength": "Magic"}
 
 
 class dice:
@@ -30,8 +36,6 @@ class dice:
             for j in range(holder[i][0]):
                 holder[i][1] += random.randint(1,
                                           3)
-
-
 
 
 class cpuAttack:
@@ -53,13 +57,17 @@ class cpuAttack:
             intel,
             max(intel, round(float(enmyStats[choi2][1]) / 2, 1))
         )
-
-        plyrStats[target][1] -= dmg
-        if plyrStats[target][1] < 0:
-            plyrStats[target][1] = 0
-
-        print(f"Enemy attacked {target}, dealing {dmg} damage,",
-              f"using its {choi2}!")
+        for Prey in Immunities:
+            if Prey == choi2 and Prey[0] == target:
+                print(f"Enemy attacked {target}", 
+                    f"using its {choi2}, and blundered")
+                break
+            elif Prey == "Strength":
+                plyrStats[target][1] -= dmg / 2
+                if plyrStats[target][1] < 0:
+                    plyrStats[target][1] = 0
+                print(f"Enemy attacked {target}, dealing {dmg} damage,",
+                    f"using its {choi2}!")
 
     def dumBase(intel, intel2,
                  intel3, intel4):
@@ -85,9 +93,17 @@ class cpuAttack:
                 choi2 = i
         dmg = round(random.uniform(intel,
         float(enmyStats[choi2][1]) / 2), 1)
-        plyrStats[intel3][1] -= dmg
-        print(f"Enemy attacked {intel3}, dealing {dmg} damage,",
-              f"using its {choi2}!")
+        for Prey in Immunities:
+            if Prey == choi2 and Prey[0] == intel3:
+                print(f"Enemy attacked {intel3}", 
+                    f"using its {choi2}, and blundered")
+                break
+            elif Prey == "Strength":
+                plyrStats[intel3][1] -= dmg
+                if plyrStats[intel3][1] < 0:
+                    plyrStats[intel3][1] = 0
+                print(f"Enemy attacked {intel3}, dealing {dmg} damage,",
+                    f"using its {choi2}!")
         if plyrStats[intel3][1] < 0:
             plyrStats[intel3][1] = 0
 
@@ -122,8 +138,17 @@ class cpuAttack:
         maxDmg = max(intel,
                      round(float(enmyStats[strngst][1]) / 2, 1))
         dmg = round(random.uniform(intel, maxDmg), 1)
-        plyrStats[intel3][1] -= dmg
-        print(f"Enemy attacked {intel3}, dealing {dmg} damage!")
+        for Prey in Immunities:
+            if Prey == strngst and Prey[0] == intel3:
+                print(f"Enemy attacked {intel3}", 
+                    f"using its {strngst}, and blundered")
+                break
+            elif Prey == "Strength":
+                plyrStats[intel3][1] -= dmg
+                if plyrStats[intel3][1] < 0:
+                    plyrStats[intel3][1] = 0
+                print(f"Enemy attacked {intel3}, dealing {dmg} damage,",
+                    f"using its {strngst}!")
         if plyrStats[intel3][1] < 0:
             plyrStats[intel3][1] = 0
 
@@ -200,8 +225,6 @@ def enemy_List(ans):
     return enmyInfo
 
 
-
-
 def battle():
     global difficulty
     nmychoi = None
@@ -233,6 +256,7 @@ def battle():
             plyrLoss = 6
             plyrLife = False
             plyr = "Xphee"
+            dice.rngSix(plyrStats)
         if plyrTurn == True:
             nmyLoss = 6
             print(f"{plyr}:")
@@ -245,9 +269,17 @@ def battle():
                 plyrTrn2 = input("What ability will you use?")
                 damage = float(input("How much power will you use in your ability?"
                                "(Power / 2 = damage   Power = ability value)"))
-                if plyrTrn1 in plyrStats and plyrTrn2 in enmyStats:
+                if plyrTrn1.lower() in [k.lower() for k in plyrStats] and plyrTrn2.lower() in [k.lower() for k in enmyStats]:
                     if damage <= plyrStats[plyrTrn2][1]:
-                        enmyStats[plyrTrn1][1] -= damage / 2
+                        for Prey in Immunities:
+                            if Prey == plyrTrn2 and Prey[0] == plyrTrn1:
+                                print(f"Enemy attacked {plyrTrn1}", 
+                                    f"using its {plyrTrn2}, and blundered")
+                                break
+                            elif Prey == "Strength":
+                                plyrStats[plyrTrn1][1] -= damage / 2
+                                if plyrStats[plyrTrn1][1] < 0:
+                                    plyrStats[plyrTrn1][1] = 0
                         print(enmyStats[plyrTrn1][1])
                             
                     else:
@@ -356,7 +388,7 @@ def intro():
         for line in f:
             if 1 < linecount and linecount < 9:
                 print(line.strip())
-                time.sleep(0)
+                time.sleep(2)
             linecount += 1
             if linecount > 8:
                 break
@@ -367,10 +399,10 @@ def intro():
                 print(line.strip())
                 time.sleep(1.5)
             linecount += 1
-            if linecount > 13:
+            if linecount > 14:
                 break
         inp1 = input("Y/or type anything for no")
-        if inp1.lower() == "y":
+        if inp1.lower() == "y" or inp1.lower() == "yes":
             for line in f:
                 if 15 < linecount and linecount < 18:
                     print(line.strip())
@@ -379,13 +411,14 @@ def intro():
                 if linecount > 20:
                     break
             inp2 = input("Y/or type anything for no")
-            if inp2.lower() == "y":
+            if inp2.lower() == "y" or inp2.lower() == "yes":
                 for line in f:
-                    if 18 < linecount and linecount < 21:
+                    if 1 < linecount and linecount < 26:
                         print(line.strip())
                         time.sleep(2)
                     linecount += 1
-                    if linecount > 20:
+                    if linecount > 25:
+                        print("")
                         break
             else:
                 for line in f:
@@ -406,11 +439,11 @@ def intro():
                     break
         if skip == False:
             for line in f:
-                if 27 < linecount and linecount < 38:
+                if 27 < linecount and linecount < 36:
                     print(line.strip())
                     time.sleep(4)
                 linecount += 1
-                if linecount > 38:
+                if linecount > 35:
                     break
         for line in f:
                 if 37 < linecount and linecount < 40:
@@ -419,9 +452,10 @@ def intro():
                 linecount += 1
                 if linecount > 39:
                     break
+    dice.rngSix(plyrStats)
+    battle()
 
 
 
-
-#nature_story()
-intro()
+nature_story()
+#intro()

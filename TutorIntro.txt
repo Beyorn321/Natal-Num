@@ -14,7 +14,7 @@ Shtirk: “Xphee.”
 Xphee: “Did you remember code (20)324^43?”
 (If they said yes)
 Xphee: “Really?.. Maybe I have put down your 3D kind too much. I hope you are not lying to me Shtirk, or we're going to be dead because of you!”
-Xphee: “So are you lying?”(Input: Y/N)
+Xphee: “So are you lying?”
 (If they said yes)
 Xphee: "See I knew it! You are lying!"
 Xphee: "Your 'Most Honest' title is being taken away after we get out of this planet!"
