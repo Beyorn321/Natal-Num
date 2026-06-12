@@ -362,7 +362,6 @@ def intro():
                 break
         time.sleep(1.5)
         input("(Type anything to continue)")
-    with open(Tutoro, "r", encoding="utf-8") as f:
         for line in f:
             if 10 < linecount and linecount < 15:
                 print(line.strip())
