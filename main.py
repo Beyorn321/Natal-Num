@@ -253,6 +253,7 @@ def battle():
     plyrTurn = True
     while nmyLoss > 0 and plyrLoss > 0 or plyrLife == True and nmyLoss > 0:
         if plyrLoss == 0:
+            print("1")
             plyrLoss = 6
             plyrLife = False
             plyr = "Xphee"
@@ -264,7 +265,7 @@ def battle():
                 if isinstance(value, list):
                     print(f"{key}: {value[1]}")
             try:
-                print("Be accurate in spelling!")
+                print("Be accurate in spelling!\n")
                 plyrTrn1 = input("What enemy ability will you attack?")
                 plyrTrn2 = input("What ability will you use?")
                 damage = float(input("How much power will you use in your ability?"
@@ -273,11 +274,13 @@ def battle():
                     if damage <= plyrStats[plyrTrn2][1]:
                         for Prey in Immunities:
                             if Prey == plyrTrn2 and Prey[0] == plyrTrn1:
-                                print(f"Enemy attacked {plyrTrn1}", 
+                                print(f"Player attacked {plyrTrn1}", 
                                     f"using its {plyrTrn2}, and blundered")
                                 break
                             elif Prey == "Strength":
+                                print(12)
                                 plyrStats[plyrTrn1][1] -= damage / 2
+                                print(enmyStats)
                                 if plyrStats[plyrTrn1][1] < 0:
                                     plyrStats[plyrTrn1][1] = 0
                         print(enmyStats[plyrTrn1][1])
@@ -296,6 +299,7 @@ def battle():
             plyrTurn = False
             for stat, values in enmyStats.items():
                 if stat != "Skill" and values[1] <= 0:
+                    print("a")
                     nmyLoss -= 1
                 else:
                     nmyLoss = 6
