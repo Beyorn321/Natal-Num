@@ -66,8 +66,9 @@ class cpuAttack:
                 plyrStats[target][1] -= dmg / 2
                 if plyrStats[target][1] < 0:
                     plyrStats[target][1] = 0
-                print(f"Enemy attacked {target}, dealing {dmg} damage,",
+                print(f"Enemy attacked {target}, dealing {dmg / 2} damage,",
                     f"using its {choi2}!")
+                time.sleep(1.5)
 
     def dumBase(intel, intel2,
                  intel3, intel4):
@@ -106,6 +107,7 @@ class cpuAttack:
                     f"using its {choi2}!")
         if plyrStats[intel3][1] < 0:
             plyrStats[intel3][1] = 0
+        time.sleep(1.5)
 
 
     def smartBase(intel, intel2, intel3, intel4):
@@ -147,10 +149,11 @@ class cpuAttack:
                 plyrStats[intel3][1] -= dmg
                 if plyrStats[intel3][1] < 0:
                     plyrStats[intel3][1] = 0
-                print(f"Enemy attacked {intel3}, dealing {dmg} damage,",
+                print(f"Enemy attacked {intel3}, dealing {dmg / 2} damage,",
                     f"using its {strngst}!")
         if plyrStats[intel3][1] < 0:
             plyrStats[intel3][1] = 0
+        time.sleep(1.5)
 
 
 def enemy_List(ans):
@@ -253,7 +256,10 @@ def battle():
     plyrTurn = True
     while nmyLoss > 0 and plyrLoss > 0 or plyrLife == True and nmyLoss > 0:
         if plyrLoss == 0:
-            print("1")
+            print("Shtirk has fallen!")
+            time.sleep(1.5)
+            print("Exphee takes place!")
+            time.sleep(1)
             plyrLoss = 6
             plyrLife = False
             plyr = "Xphee"
@@ -265,7 +271,7 @@ def battle():
                 if isinstance(value, list):
                     print(f"{key}: {value[1]}")
             try:
-                print("Be accurate in spelling!\n")
+                print("Be accurate in spelling and capitals!\n")
                 plyrTrn1 = input("What enemy ability will you attack?")
                 plyrTrn2 = input("What ability will you use?")
                 damage = float(input("How much power will you use in your ability?"
@@ -276,10 +282,10 @@ def battle():
                             if Prey == plyrTrn2 and Prey[0] == plyrTrn1:
                                 print(f"Player attacked {plyrTrn1}", 
                                     f"using its {plyrTrn2}, and blundered")
+                                time.sleep(1.5)
                                 break
                             elif Prey == "Strength":
                                 enmyStats[plyrTrn1][1] -= damage / 2
-                                print(enmyStats)
                                 if enmyStats[plyrTrn1][1] < 0:
                                     enmyStats[plyrTrn1][1] = 0
                             
@@ -287,13 +293,17 @@ def battle():
                         print("You exceeded your power, and",
                                 "overestimated yourself")
                         damage -= damage
+                        time.sleep(1.5)
             except:
                 print("The ability you typed was off or",
                       "you didn't properly used numbers.")
+                time.sleep(1.5)
             else:
                 print(f"You delt {damage / 2} damage to its {plyrTrn1}!")
+                time.sleep(1.5)
             finally:
                 print("End of turn.")
+                time.sleep(1)
             plyrTurn = False
             for stat, values in enmyStats.items():
                 if stat != "Skill" and values[1] <= 0:
@@ -311,7 +321,7 @@ def battle():
             elif enmyInfo["Patrn"] == "dumbase":
                 cpuAttack.dumBase(V1, V2, V3, V4)
             else:
-                cpuAttack.smrtBase(V1, V2, V3, V4)
+                cpuAttack.smartBase(V1, V2, V3, V4)
             plyrTurn = True
             for stat, values in plyrStats.items():
                 if stat != "Skill" and values[1] <= 0:
@@ -320,8 +330,9 @@ def battle():
                     plyrLoss = 6
     if nmyLoss <= 0:
         for stat, values in plyrStats.items():
-            print(stat, values)
-            stat[values][1] = 0
+            if stat != "Skill":
+                print(stat, values)
+                values[1] = 0
         print(f"You defeated the {nmychoi}!")
         time.sleep(1)
         plyrStats["Skill"] += 2
@@ -331,9 +342,14 @@ def battle():
         nature_story()
     elif plyrLoss <= 0:
         print(f"The {nmychoi} defeated you!")
-        time.sleep(1)
+        time.sleep(1.5)
         print("Game over!")
-        time.sleep(1)
+        time.sleep(1.5)
+        print(f"You defeated {difficulty}",
+              "enemies, and gained a total of",
+              f"{plyrStats['Skill'] - 5} skill",
+              "points!")
+        time.sleep(3)
         quit()
 
 
@@ -392,7 +408,7 @@ def intro():
         for line in f:
             if 1 < linecount and linecount < 9:
                 print(line.strip())
-                time.sleep(2)
+                time.sleep(4.5)
             linecount += 1
             if linecount > 8:
                 break
@@ -461,5 +477,5 @@ def intro():
 
 
 
-nature_story()
-#intro()
+#nature_story()
+intro()
