@@ -278,12 +278,10 @@ def battle():
                                     f"using its {plyrTrn2}, and blundered")
                                 break
                             elif Prey == "Strength":
-                                print(12)
-                                plyrStats[plyrTrn1][1] -= damage / 2
+                                enmyStats[plyrTrn1][1] -= damage / 2
                                 print(enmyStats)
-                                if plyrStats[plyrTrn1][1] < 0:
-                                    plyrStats[plyrTrn1][1] = 0
-                        print(enmyStats[plyrTrn1][1])
+                                if enmyStats[plyrTrn1][1] < 0:
+                                    enmyStats[plyrTrn1][1] = 0
                             
                     else:
                         print("You exceeded your power, and",
@@ -299,7 +297,6 @@ def battle():
             plyrTurn = False
             for stat, values in enmyStats.items():
                 if stat != "Skill" and values[1] <= 0:
-                    print("a")
                     nmyLoss -= 1
                 else:
                     nmyLoss = 6
@@ -316,12 +313,15 @@ def battle():
             else:
                 cpuAttack.smrtBase(V1, V2, V3, V4)
             plyrTurn = True
-            for stat, values in enmyStats.items():
+            for stat, values in plyrStats.items():
                 if stat != "Skill" and values[1] <= 0:
                     plyrLoss -= 1
                 else:
                     plyrLoss = 6
     if nmyLoss <= 0:
+        for stat, values in plyrStats.items():
+            print(stat, values)
+            stat[values][1] = 0
         print(f"You defeated the {nmychoi}!")
         time.sleep(1)
         plyrStats["Skill"] += 2
