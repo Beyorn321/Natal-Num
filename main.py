@@ -342,6 +342,20 @@ def battle():
         difficulty += 1
         print("You gained 2 skill points!")
         time.sleep(1)
+        if difficulty + 1 % 3 == 0:
+            print("You got a wild roll gain!")
+            time.sleep(1)
+            inputz = None
+            while inputz == None:
+                inputz = input("What stat do you want to gain in?")
+                if inputz.lower() == any(k.lower() for k in plyrStats):
+                    plyrStats[inputz][0] += 1
+                    print(f"Your {inputz} has gain in chance!")
+                else:
+                    inputz = None
+                    print("You mistyped, try again!")
+                    time.sleep(1)
+        time.sleep(1)
         nature_story()
     elif plyrLoss <= 0:
         print(f"The {nmychoi} defeated you!")

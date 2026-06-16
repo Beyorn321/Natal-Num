@@ -9,4 +9,3 @@ Dates:
  - June 10: complete the basics and requirments or add advances.
  - June 11:
  - June 12:
- 
