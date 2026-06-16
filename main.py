@@ -52,22 +52,22 @@ class cpuAttack:
                 choi.append(stat)
 
         choi2 = random.choice(choi)
-
+        if intel > enmyStats[choi2][1]:
+            intel = enmyStats[choi2][1]
         dmg = random.uniform(
-            intel,
-            max(intel, round(float(enmyStats[choi2][1]) / 2, 1))
-        )
-        for Prey in Immunities:
-            if Prey == choi2 and Prey[0] == target:
+            intel, float(enmyStats[choi2][1]))
+        for Prey1, Prey2 in Immunities.items():
+            if Prey1 == choi2 and Prey2 == target:
                 print(f"Enemy attacked {target}", 
                     f"using its {choi2}, and blundered")
                 break
-            elif Prey == "Strength":
-                plyrStats[target][1] -= dmg / 2
+            elif Prey1 == "Strength":
+                plyrStats[target][1] -= round(dmg / 2, 1)
                 if plyrStats[target][1] < 0:
                     plyrStats[target][1] = 0
-                print(f"Enemy attacked {target}, dealing {dmg / 2} damage,",
-                    f"using its {choi2}!")
+                print(f"Enemy attacked {target},",
+                f"dealing {round(dmg / 2, 1)} damage,",
+                f"using its {choi2}!")
                 time.sleep(1.5)
 
     def dumBase(intel, intel2,
@@ -92,18 +92,21 @@ class cpuAttack:
                     ans = False
             if ans == True:
                 choi2 = i
-        dmg = round(random.uniform(intel,
-        float(enmyStats[choi2][1]) / 2), 1)
-        for Prey in Immunities:
-            if Prey == choi2 and Prey[0] == intel3:
+        if intel > enmyStats[choi2][1]:
+            intel = enmyStats[choi2][1]
+        dmg = random.uniform(
+            intel, float(enmyStats[choi2][1]))
+        for Prey1, Prey2 in Immunities.items():
+            if Prey1 == choi2 and Prey2 == intel3:
                 print(f"Enemy attacked {intel3}", 
                     f"using its {choi2}, and blundered")
                 break
-            elif Prey == "Strength":
-                plyrStats[intel3][1] -= dmg
+            elif Prey1 == "Strength":
+                plyrStats[intel3][1] -= round(dmg / 2, 1)
                 if plyrStats[intel3][1] < 0:
                     plyrStats[intel3][1] = 0
-                print(f"Enemy attacked {intel3}, dealing {dmg} damage,",
+                print(f"Enemy attacked {intel3},",
+                      f"dealing {round(dmg / 2, 1)} damage,",
                     f"using its {choi2}!")
         if plyrStats[intel3][1] < 0:
             plyrStats[intel3][1] = 0
@@ -140,12 +143,12 @@ class cpuAttack:
         maxDmg = max(intel,
                      round(float(enmyStats[strngst][1]) / 2, 1))
         dmg = round(random.uniform(intel, maxDmg), 1)
-        for Prey in Immunities:
-            if Prey == strngst and Prey[0] == intel3:
+        for Prey1, Prey2 in Immunities.items():
+            if Prey1 == strngst and Prey2 == intel3:
                 print(f"Enemy attacked {intel3}", 
                     f"using its {strngst}, and blundered")
                 break
-            elif Prey == "Strength":
+            elif Prey1 == "Strength":
                 plyrStats[intel3][1] -= dmg
                 if plyrStats[intel3][1] < 0:
                     plyrStats[intel3][1] = 0
@@ -271,20 +274,20 @@ def battle():
                 if isinstance(value, list):
                     print(f"{key}: {value[1]}")
             try:
-                print("Be accurate in spelling and capitals!\n")
+                print("Be accurate in spelling!\n")
                 plyrTrn1 = input("What enemy ability will you attack?")
                 plyrTrn2 = input("What ability will you use?")
                 damage = float(input("How much power will you use in your ability?"
                                "(Power / 2 = damage   Power = ability value)"))
-                if plyrTrn1.lower() in [k.lower() for k in plyrStats] and plyrTrn2.lower() in [k.lower() for k in enmyStats]:
+                if plyrTrn1.lower() == any(k.lower() for k in plyrStats) and plyrTrn2.lower() == any(k.lower() for k in enmyStats):
                     if damage <= plyrStats[plyrTrn2][1]:
-                        for Prey in Immunities:
-                            if Prey == plyrTrn2 and Prey[0] == plyrTrn1:
+                        for Prey1, Prey2 in Immunities.items():
+                            if Prey1 == plyrTrn2 and Prey2 == plyrTrn1:
                                 print(f"Player attacked {plyrTrn1}", 
                                     f"using its {plyrTrn2}, and blundered")
                                 time.sleep(1.5)
                                 break
-                            elif Prey == "Strength":
+                            elif Prey1 == "Strength":
                                 enmyStats[plyrTrn1][1] -= damage / 2
                                 if enmyStats[plyrTrn1][1] < 0:
                                     enmyStats[plyrTrn1][1] = 0
