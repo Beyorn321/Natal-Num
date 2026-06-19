@@ -494,5 +494,5 @@ def intro():
 
 
 
-#nature_story()
-intro()
+nature_story()
+#intro()
